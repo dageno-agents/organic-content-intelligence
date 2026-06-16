@@ -1,6 +1,6 @@
 # Data and API Spec
 
-This document defines the portable data contract for SEO Content Funnel.
+This document defines the portable data contract for Organic Content Intelligence.
 
 ## Google Search Console
 

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://seo-content-funnel.dev/schemas/data-quality.schema.json",
+  "$id": "https://organic-content-intelligence.dev/schemas/data-quality.schema.json",
   "title": "DataQuality",
   "type": "object",
   "required": ["quality_grade", "reason_codes"],

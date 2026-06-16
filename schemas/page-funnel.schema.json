@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://seo-content-funnel.dev/schemas/page-funnel.schema.json",
+  "$id": "https://organic-content-intelligence.dev/schemas/page-funnel.schema.json",
   "title": "PageFunnel",
   "type": "object",
   "required": [

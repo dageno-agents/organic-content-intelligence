@@ -1,39 +1,32 @@
 # Architecture
 
-SEO Content Funnel is organized around a simple diagnostics pipeline.
+Organic Content Intelligence is a diagnostics system, not a single dashboard.
 
-```text
-GSC data
-  -> URL normalization
-  -> page and query metrics
-  -> query clustering
+It connects several imperfect signals, makes uncertainty visible, and only recommends automation when the evidence is strong enough.
 
-GA4-style data
-  -> URL normalization
-  -> page funnel metrics
-  -> conversion weakness scoring
+## System Pipeline
 
-Content crawl
-  -> page structure
-  -> query-to-content mapping
-  -> coverage scoring
+```mermaid
+flowchart TD
+  GSC["Google Search Console<br/>queries, pages, clicks, impressions"] --> N["URL normalization"]
+  GA4["GA4 Data API<br/>sessions, engagement, events"] --> N
+  LOGS["Server / edge logs<br/>AI crawler access"] --> N
+  CRAWL["Content crawl<br/>headings, FAQs, CTAs, snippets"] --> N
+  KB["Brand knowledge base<br/>pricing, features, screenshots, FAQ"] --> FRESH["Freshness checks"]
 
-Brand knowledge base
-  -> product facts
-  -> pricing, screenshots, FAQs
-  -> freshness checks
+  N --> KEY["canonical_page_key"]
+  KEY --> PAGE["Page funnel"]
+  KEY --> QUERY["Query and intent clusters"]
+  KEY --> GEO["AI/GEO visibility"]
+  CRAWL --> MAP["Query-to-content mapping"]
 
-AI/GEO signals
-  -> referral sessions
-  -> crawler logs
-  -> visibility diagnostics
-
-All sources
-  -> data quality checks
-  -> page funnel dashboard
-  -> page diagnosis
-  -> intent cluster overview
-  -> task draft generation
+  PAGE --> DIAG["Diagnosis"]
+  QUERY --> DIAG
+  MAP --> DIAG
+  GEO --> DIAG
+  FRESH --> DIAG
+  DIAG --> QUALITY["Data quality gate"]
+  QUALITY --> TASK["Optimization task draft"]
 ```
 
 ## Runtime Layers
@@ -44,8 +37,10 @@ Adapters import data from external systems:
 
 - Google Search Console Search Analytics API
 - Google Analytics Data API
-- Server, edge, or CDN logs
+- Server, edge, CDN, or firewall logs
 - Optional brand knowledge base files
+
+Each adapter should preserve raw source fields before writing normalized aggregates.
 
 ### 2. Normalization
 
@@ -58,8 +53,9 @@ Common rules:
 - Remove known tracking query parameters.
 - Preserve business query parameters only when configured.
 - Use canonical URL when available.
+- Send unmatched URLs to Data Quality with `URL_MATCH_FAILED`.
 
-### 3. Diagnostics
+### 3. Diagnostics Jobs
 
 Diagnostics jobs calculate:
 
@@ -69,8 +65,25 @@ Diagnostics jobs calculate:
 - Data Quality grade
 - Freshness status
 - Cannibalization flags
+- AI/GEO visibility status
 
-### 4. API Layer
+Scores should store their input components so users can understand why a page was flagged.
+
+### 4. Evidence Model
+
+```mermaid
+flowchart LR
+  Q["Raw query"] --> C["Query cluster"]
+  C --> I["Intent type"]
+  I --> S["Page section match"]
+  S --> G["Gap type"]
+  G --> R["Recommended action"]
+  R --> E["Task draft evidence"]
+```
+
+The query cluster is the summary layer. Query-to-content mapping is the proof layer.
+
+## API Layer
 
 The UI should consume stable API contracts:
 
@@ -83,7 +96,21 @@ The UI should consume stable API contracts:
 - `/api/ai-geo/crawler-logs`
 - `/api/task-drafts`
 
-### 5. UI
+## UI Surfaces
+
+```mermaid
+flowchart TD
+  O["Page Funnel Overview"] --> I["Issue Groups"]
+  I --> D["Single Page Diagnosis"]
+  D --> T["Task Draft"]
+  G["AI/GEO Signals"] --> D
+  C["Intent Cluster Overview"] --> D
+  Q["Data Quality"] --> O
+  Q --> I
+  Q --> D
+  Q --> C
+  K["Brand Knowledge Base"] --> D
+```
 
 The UI has five primary screens:
 
@@ -94,3 +121,11 @@ The UI has five primary screens:
 5. Intent cluster overview
 
 Data Quality and Brand Knowledge Base are global modules, not primary navigation pages.
+
+## Data Boundary
+
+GA4 data is page-level performance data.
+
+Query clusters explain intent and content fit.
+
+Do not present query clusters as exact conversion attribution unless a real attribution model is added later.

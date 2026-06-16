@@ -1,147 +1,266 @@
-# SEO Content Funnel
+# Organic Content Intelligence
 
-An open-source content diagnostics framework for understanding whether search traffic is actually being captured by content pages.
+> Open-source diagnostics for organic content growth: search demand, page funnels, intent coverage, data quality, AI/GEO visibility, and optimization task drafts.
 
-SEO Content Funnel connects Search Console, GA4-style page behavior, query intent clusters, content coverage, data quality checks, and optional AI/GEO signals into one practical workflow:
+Organic Content Intelligence helps teams answer a harder question than "which page lost traffic?"
 
-1. Find high-risk content pages.
-2. Understand which search intents they attract.
-3. Diagnose where the content fails to answer that intent.
-4. Separate page-level conversion weakness from query-level evidence.
-5. Generate an optimization task draft only when data quality is good enough.
+It asks:
 
-This project is intentionally generic. It does not include any private customer data, proprietary scoring weights, internal prompts, or hosted Dageno workflows.
+**Is this content actually capturing the demand it attracts?**
 
-## What It Helps You Answer
+Most SEO dashboards stop at impressions, clicks, CTR, and Position. Most analytics dashboards start after the user lands on the page. This project joins the two sides, then adds intent evidence, content coverage, freshness checks, AI/GEO signals, and data quality guardrails.
 
-- Which pages are losing search visibility?
-- Which pages get impressions but fail to convert or engage?
-- Which query clusters have demand but poor content coverage?
-- Which articles may be stale because product facts, pricing, screenshots, or FAQs changed?
-- Which pages show AI referral or crawler activity?
-- Which search intents are covered well across the entire content library?
+The result is a portable framework for diagnosing where organic content fails to carry users from search demand to useful action.
 
-## Core Concepts
+## Why This Exists
 
-### Page Funnel
+Content teams often have data, but not a diagnosis.
 
-A page-level view that combines:
+Search Console can show that a page gets impressions for new queries. GA4 can show that the page has weak engagement or few CTA clicks. A crawler can show that AI bots visited the page. A content audit can show that pricing, screenshots, or product claims are stale.
 
-- GSC metrics: impressions, clicks, CTR, Position
-- GA4-style metrics: organic sessions, engagement rate, CTA clicks, key events
-- Content diagnostics: query clusters, content coverage, stale content signals
-- Data quality: whether the system can safely recommend action
+But those signals usually live in different tools.
 
-### Query Cluster
+Organic Content Intelligence turns them into one workflow:
 
-A group of search queries with similar intent. Query clusters explain what users are trying to do, but they do not provide exact conversion attribution.
+```mermaid
+flowchart LR
+  A["Search demand<br/>GSC queries + pages"] --> B["Intent clusters<br/>What users want"]
+  C["Page behavior<br/>GA4 page performance"] --> D["Page funnel<br/>Where users drop"]
+  E["Content crawl<br/>Headings, FAQs, CTAs, snippets"] --> F["Coverage map<br/>Where intent is answered"]
+  G["Brand knowledge<br/>Pricing, features, screenshots, FAQ"] --> H["Freshness checks<br/>What is stale or unsafe"]
+  I["AI/GEO signals<br/>AI referrals + crawler logs"] --> J["Visibility checks<br/>Can AI systems reach it"]
+  B --> K["Diagnosis"]
+  D --> K
+  F --> K
+  H --> K
+  J --> K
+  K --> L["Data quality gate"]
+  L --> M["Optimization task draft"]
+```
 
-### GA4 Page Performance
+## What It Can Diagnose
 
-GA4 data is treated as page-level performance only. The framework does not claim that a specific query cluster directly caused a conversion.
+| Problem | What the system checks | Example output |
+| --- | --- | --- |
+| Traffic risk | GSC impressions, clicks, CTR / CTR Δ, Position movement | "This page has high exposure but worsening rank and CTR." |
+| Conversion weakness | GA4 page-level sessions, engagement, CTA clicks, key events | "The page receives organic sessions but weak CTA interaction." |
+| Intent gap | Query clusters vs page sections, FAQs, tables, CTAs | "New tool-intent queries have impressions, but no workflow section exists." |
+| Stale content | Brand knowledge base vs article claims, screenshots, pricing, FAQ | "Pricing copy is outdated against knowledge base version 2026-06." |
+| Cannibalization | Multiple pages competing for the same intent cluster | "Two articles split the same commercial intent." |
+| AI/GEO visibility | AI referral sessions and crawler logs | "AI referrals exist, but ClaudeBot is blocked on this URL." |
+| Data risk | Missing, incomplete, or low-confidence data | "Do not generate a task yet; manual verification required." |
 
-### Data Quality
+## Product Surface
 
-Every recommendation reads from a shared object:
+The demo contains five surfaces. They are deliberately generic, so teams can adapt them to their own stack.
+
+```mermaid
+flowchart TD
+  O["1. Page Funnel Overview"] --> I["2. Issue Groups"]
+  I --> D["3. Single Page Diagnosis"]
+  D --> T["Task Draft"]
+  G["4. AI/GEO Signals"] --> D
+  C["5. Intent Cluster Overview"] --> D
+  Q["Data Quality"] --> O
+  Q --> I
+  Q --> D
+  Q --> C
+  K["Brand Knowledge Base"] --> D
+```
+
+### 1. Page Funnel Overview
+
+The page-level command center.
+
+It combines:
+
+- GSC: impressions, clicks, CTR / CTR Δ, Position
+- GA4-style page performance: organic sessions, engagement rate, CTA clicks, key events
+- Risk scores: Traffic Risk Score, Conversion Weak Score
+- Data Quality: whether the system can safely recommend action
+
+The page list is not the final task generator. It is the entry point into diagnosis.
+
+### 2. Issue Groups
+
+Groups pages by problem type:
+
+- CTR decline
+- Ranking or impressions decline
+- Conversion weakness
+- Stale content
+- New query opportunity
+- Intent cannibalization
+- AI/GEO visibility weakness
+
+This helps teams work in batches instead of inspecting URLs one by one.
+
+### 3. Single Page Diagnosis
+
+The evidence room for one page.
+
+It shows which query clusters the page attracts, what intent each cluster represents, how well the page covers that intent, and where the content should be improved.
+
+Query-to-content mapping is shown as an expandable detail layer, not a permanent table. This keeps the page readable while preserving evidence.
+
+```mermaid
+flowchart LR
+  A["Query cluster<br/>track brand mentions in ChatGPT"] --> B["Intent<br/>Tool / workflow"]
+  B --> C["Current page match<br/>Short paragraph"]
+  C --> D["Gap<br/>Coverage is shallow"]
+  D --> E["Recommended module<br/>New H2 + checklist + CTA"]
+```
+
+### 4. AI / GEO Signals
+
+Two related but separate tables:
+
+- AI Referral Sessions from analytics
+- AI Crawler Logs from server, edge, or CDN logs
+
+The project keeps these signals separate because referral traffic and crawler accessibility answer different questions.
+
+### 5. Intent Cluster Overview
+
+A library-level view.
+
+Instead of asking "which page is weak?", this view asks "which user intents are we covering well or poorly across the whole content library?"
+
+This is useful for content strategy, pruning, consolidation, and roadmap planning.
+
+## Data Model at a Glance
+
+```mermaid
+erDiagram
+  PAGES ||--o{ GSC_PAGE_DAILY : has
+  PAGES ||--o{ GA4_PAGE_DAILY : has
+  PAGES ||--o{ QUERY_CONTENT_MAPPING : contains
+  QUERY_CLUSTERS ||--o{ QUERY_CLUSTER_MEMBERS : groups
+  QUERY_CLUSTERS ||--o{ QUERY_CONTENT_MAPPING : explains
+  PAGES ||--o{ DATA_QUALITY_CHECKS : checked_by
+  BRAND_KB_SOURCES ||--o{ BRAND_KB_ITEMS : provides
+  PAGES ||--o{ FRESHNESS_CHECKS : evaluated_by
+  QUERY_CLUSTERS ||--o{ INTENT_CLUSTER_SUMMARY : aggregates
+```
+
+## Data Quality Gate
+
+Every recommendation reads from the same object:
 
 ```json
 {
   "quality_grade": "High",
-  "reason_codes": []
+  "reason_codes": [],
+  "checked_at": "2026-06-16T00:00:00Z"
 }
 ```
 
-Recommended action logic:
+| Grade | Meaning | UI action |
+| --- | --- | --- |
+| High | Evidence is good enough for automation | Generate task draft |
+| Medium | Useful, but needs human verification | Needs verification |
+| Low | Useful for diagnosis only | Diagnostics only |
+| Invalid | Do not judge | No judgment |
 
-| Grade | UI Action |
-| --- | --- |
-| High | Generate task draft |
-| Medium | Needs verification |
-| Low | Diagnostics only |
-| Invalid | No judgment |
+This guardrail matters because content optimization systems can easily look more certain than the data allows.
 
-## Open-Core Friendly Boundary
+## Important Attribution Boundary
 
-Recommended open-source scope:
+GA4 data is treated as **page-level performance**.
 
-- Frontend dashboard
-- Mock data and schemas
-- GSC / GA4 adapter interfaces
-- URL normalization
-- Data quality framework
-- Basic scoring formula examples
-- Query cluster and intent overview data model
+Query clusters explain search intent and content fit. They do not prove that a specific query cluster directly caused a conversion.
 
-Recommended closed or hosted scope:
+Use:
 
-- Customer data
-- Proprietary scoring weights
-- Internal LLM prompts
-- Brand knowledge base content
-- Team workflow, approval, and publishing automation
-- Hosted sync infrastructure
+```text
+GA4 Page Performance, not query attribution
+```
+
+Allowed attribution labels:
+
+- `estimated`
+- `directional`
 
 ## Quick Start
 
-This demo has no build step and no external dependencies.
+This seed project has no build step and no external dependencies.
 
 ```bash
-cd outputs/seo-content-funnel
+git clone https://github.com/dageno-agents/organic-content-intelligence.git
+cd organic-content-intelligence
 npm run dev
 ```
 
-Then open:
+Open:
 
 ```text
 http://localhost:4173/public/
 ```
 
-You can also run a fixture check:
+Run fixture checks:
 
 ```bash
 npm run check
 ```
 
-## Project Structure
+## For Humans and Agents
+
+If you are evaluating the project:
+
+- Start with this README.
+- Read [Page Walkthrough](docs/page-walkthrough.md) to understand the five UI surfaces.
+- Read [Data and API Spec](docs/data-api-spec.md) to connect GSC, GA4, crawler logs, and brand knowledge.
+- Read [Architecture](docs/architecture.md) to understand the pipeline.
+
+If you are a coding agent:
+
+- Start with [Agent Guide](docs/agent-guide.md).
+- Do not invent query-level conversion attribution.
+- Keep Data Quality shared across all surfaces.
+- Keep private customer data, internal prompts, and proprietary weights out of the open-source core.
+
+## Repository Structure
 
 ```text
-seo-content-funnel/
-  README.md
-  LICENSE
-  CONTRIBUTING.md
-  package.json
-  public/
-    index.html
-  src/
-    app.js
-    styles.css
-    mock-data.js
-    scoring.js
-    url-normalize.js
-  schemas/
-    data-quality.schema.json
-    page-funnel.schema.json
-  docs/
-    data-api-spec.md
-    architecture.md
-    roadmap.md
-  examples/
-    gsc-request.json
-    ga4-run-report-request.json
-  scripts/
-    validate-fixtures.mjs
+organic-content-intelligence/
+  public/                 Static demo entry
+  src/                    Mock data, UI rendering, scoring, URL normalization
+  schemas/                JSON Schemas for shared contracts
+  examples/               GSC and GA4 request examples
+  docs/                   Architecture, data spec, page walkthrough, roadmap
+  scripts/                Fixture validation
 ```
 
-## API Alignment
+## Open-Core Boundary
 
-This project is designed around:
+Good open-source core:
 
-- Google Search Console Search Analytics API
-- Google Analytics Data API `properties.runReport`
-- Server or edge logs for AI crawler activity
-- Optional brand knowledge base imports
+- Dashboard shell
+- Mock data and schemas
+- GSC / GA4 adapter contracts
+- URL normalization
+- Data Quality framework
+- Basic scoring examples
+- Query cluster and intent overview models
 
-See [docs/data-api-spec.md](docs/data-api-spec.md).
+Better kept in a hosted or private layer:
+
+- Customer data
+- Proprietary scoring weights
+- Internal LLM prompts
+- Private brand knowledge base content
+- Publishing workflow and approvals
+- Managed sync infrastructure
+
+## Naming Note
+
+The original prototype used the slug `seo-content-funnel`, but the project direction is broader than an SEO funnel. The public product name is **Organic Content Intelligence** because it covers organic search demand, content coverage, page performance, freshness, AI/GEO visibility, and task drafting.
+
+## References
+
+- GitHub README guidance: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes
+- GitHub Mermaid diagrams: https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams
+- Diataxis documentation framework: https://diataxis.fr/
 
 ## License
 

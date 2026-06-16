@@ -1,7 +1,7 @@
 {
-  "name": "seo-content-funnel",
+  "name": "organic-content-intelligence",
   "version": "0.1.0",
-  "description": "Open-source SEO content diagnostics framework for page funnels, query intent clusters, data quality, and AI/GEO signals.",
+  "description": "Open-source organic content intelligence for search demand, page funnels, intent coverage, data quality, and AI/GEO visibility.",
   "type": "module",
   "private": false,
   "license": "MIT",
@@ -12,8 +12,11 @@
   "keywords": [
     "seo",
     "content",
+    "organic-growth",
+    "content-intelligence",
     "google-search-console",
     "ga4",
+    "search-intent",
     "query-clustering",
     "content-diagnostics",
     "geo"
