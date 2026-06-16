@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seo-content-funnel.dev/schemas/data-quality.schema.json",
+  "title": "DataQuality",
+  "type": "object",
+  "required": ["quality_grade", "reason_codes"],
+  "properties": {
+    "quality_grade": {
+      "type": "string",
+      "enum": ["High", "Medium", "Low", "Invalid"]
+    },
+    "reason_codes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "checked_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

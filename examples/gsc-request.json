@@ -1,0 +1,10 @@
+{
+  "startDate": "2026-05-17",
+  "endDate": "2026-06-15",
+  "dimensions": ["date", "page", "query"],
+  "type": "web",
+  "aggregationType": "auto",
+  "rowLimit": 25000,
+  "startRow": 0,
+  "dataState": "final"
+}

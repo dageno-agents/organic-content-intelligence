@@ -1,0 +1,42 @@
+{
+  "dateRanges": [
+    {
+      "startDate": "30daysAgo",
+      "endDate": "yesterday"
+    }
+  ],
+  "dimensions": [
+    {
+      "name": "date"
+    },
+    {
+      "name": "landingPagePlusQueryString"
+    },
+    {
+      "name": "sessionSourceMedium"
+    }
+  ],
+  "metrics": [
+    {
+      "name": "sessions"
+    },
+    {
+      "name": "engagedSessions"
+    },
+    {
+      "name": "engagementRate"
+    },
+    {
+      "name": "keyEvents"
+    }
+  ],
+  "dimensionFilter": {
+    "filter": {
+      "fieldName": "sessionSourceMedium",
+      "stringFilter": {
+        "matchType": "CONTAINS",
+        "value": "google / organic"
+      }
+    }
+  }
+}

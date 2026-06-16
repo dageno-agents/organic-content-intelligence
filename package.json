@@ -1,0 +1,21 @@
+{
+  "name": "seo-content-funnel",
+  "version": "0.1.0",
+  "description": "Open-source SEO content diagnostics framework for page funnels, query intent clusters, data quality, and AI/GEO signals.",
+  "type": "module",
+  "private": false,
+  "license": "MIT",
+  "scripts": {
+    "dev": "python3 -m http.server 4173",
+    "check": "node scripts/validate-fixtures.mjs"
+  },
+  "keywords": [
+    "seo",
+    "content",
+    "google-search-console",
+    "ga4",
+    "query-clustering",
+    "content-diagnostics",
+    "geo"
+  ]
+}

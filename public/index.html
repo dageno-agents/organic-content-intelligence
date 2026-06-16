@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SEO Content Funnel</title>
+    <link rel="stylesheet" href="../src/styles.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="logo">SCF</span>
+        <div>
+          <strong>SEO Content Funnel</strong>
+          <small>Open diagnostics framework</small>
+        </div>
+      </div>
+      <nav>
+        <a href="#overview" class="active">Page Funnel</a>
+        <a href="#issues">Issue Groups</a>
+        <a href="#detail">Page Diagnosis</a>
+        <a href="#geo">AI / GEO Signals</a>
+        <a href="#intent">Intent Overview</a>
+      </nav>
+    </aside>
+
+    <main>
+      <section class="hero" id="overview">
+        <div>
+          <p class="eyebrow">Open-source SEO diagnostics</p>
+          <h1>Find where search traffic stops becoming business outcomes.</h1>
+          <p>
+            Combine Search Console, GA4-style page behavior, query clusters,
+            content coverage, data quality, and AI/GEO signals in one funnel.
+          </p>
+        </div>
+        <div class="hero-stats">
+          <div><strong id="total-impressions">0</strong><span>Impressions</span></div>
+          <div><strong id="total-clicks">0</strong><span>Clicks</span></div>
+          <div><strong id="avg-risk">0</strong><span>Avg risk</span></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="section-head">
+          <div>
+            <h2>All Pages Funnel</h2>
+            <p>Page-level search and conversion diagnostics. GA4 data is not query attribution.</p>
+          </div>
+          <span class="pill">Mock data</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Page</th>
+                <th>Main issue</th>
+                <th>Traffic risk</th>
+                <th>Conversion weak</th>
+                <th>Position</th>
+                <th>CTR / Δ</th>
+                <th>Sessions</th>
+                <th>Data quality</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="page-table"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" id="issues">
+        <div class="section-head">
+          <div>
+            <h2>Issue Groups</h2>
+            <p>Group pages by shared problems before creating optimization tasks.</p>
+          </div>
+        </div>
+        <div class="status-bar">
+          <span>Current filter: CTR decline</span>
+          <span>Matched pages: 18</span>
+          <span>Sort: Traffic risk + Conversion weak + Data quality</span>
+          <span>Exclude: Data Quality = Invalid</span>
+        </div>
+        <div class="cards" id="issue-cards"></div>
+      </section>
+
+      <section class="panel" id="detail">
+        <div class="section-head">
+          <div>
+            <h2>Single Page Diagnosis</h2>
+            <p>Query clusters are the evidence layer. Expand a cluster to inspect query-to-content details.</p>
+          </div>
+        </div>
+        <div class="notice">
+          GA4 Page Performance is page-level data. It does not mean this query cluster directly caused conversions.
+          Attribution labels are limited to estimated or directional.
+        </div>
+        <div id="cluster-list" class="cluster-list"></div>
+      </section>
+
+      <section class="panel" id="geo">
+        <div class="section-head">
+          <div>
+            <h2>AI / GEO Signals</h2>
+            <p>AI referral sessions and AI crawler logs are separate signals.</p>
+          </div>
+          <div class="tabs">
+            <button class="tab active" data-tab="referrals">AI Referral Sessions</button>
+            <button class="tab" data-tab="crawlers">AI Crawler Logs</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead id="geo-head"></thead>
+            <tbody id="geo-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" id="intent">
+        <div class="section-head">
+          <div>
+            <h2>Intent Cluster Overview</h2>
+            <p>Understand coverage and risk by search intent, not just by URL.</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Intent cluster</th>
+                <th>Type</th>
+                <th>Impressions</th>
+                <th>CTR</th>
+                <th>Primary page</th>
+                <th>Coverage</th>
+                <th>Recommendation</th>
+              </tr>
+            </thead>
+            <tbody id="intent-table"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="../src/app.js"></script>
+  </body>
+</html>

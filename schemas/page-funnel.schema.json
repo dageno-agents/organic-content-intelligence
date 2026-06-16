@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seo-content-funnel.dev/schemas/page-funnel.schema.json",
+  "title": "PageFunnel",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "url",
+    "primary_issue",
+    "traffic_risk_score",
+    "conversion_weak_score",
+    "gsc",
+    "ga4_page_performance",
+    "data_quality"
+  ],
+  "properties": {
+    "id": { "type": "string" },
+    "title": { "type": "string" },
+    "url": { "type": "string" },
+    "content_type": { "type": "string" },
+    "primary_issue": { "type": "string" },
+    "traffic_risk_score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "conversion_weak_score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "gsc": {
+      "type": "object",
+      "required": ["impressions", "clicks", "ctr", "position"],
+      "properties": {
+        "impressions": { "type": "number" },
+        "impressions_delta": { "type": "number" },
+        "clicks": { "type": "number" },
+        "ctr": { "type": "number" },
+        "ctr_delta": { "type": "number" },
+        "position": { "type": "number" },
+        "position_delta": { "type": "number" }
+      }
+    },
+    "ga4_page_performance": {
+      "type": "object",
+      "required": ["sessions", "engagement_rate", "cta_clicks", "key_events"],
+      "properties": {
+        "sessions": { "type": "number" },
+        "engagement_rate": { "type": "number" },
+        "cta_clicks": { "type": "number" },
+        "key_events": { "type": "number" }
+      }
+    },
+    "data_quality": {
+      "$ref": "data-quality.schema.json"
+    }
+  }
+}
